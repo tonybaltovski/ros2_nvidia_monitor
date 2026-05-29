@@ -36,10 +36,13 @@ jobs:
         include:
           - distro: jazzy
             container: ubuntu:24.04
+            use-testing: false
           - distro: lyrical
             container: ubuntu:26.04
+            use-testing: false
           - distro: rolling
             container: ubuntu:26.04
+            use-testing: true
     runs-on: ubuntu-24.04
     container:
       image: ${{ matrix.container }}
@@ -55,6 +58,7 @@ jobs:
       - uses: ros-tooling/setup-ros@v0.7
         with:
           required-ros-distributions: ${{ matrix.distro }}
+          use-ros2-testing: ${{ matrix.use-testing }}
 
       - name: Install pynvml (no rosdep key)
         run: apt-get install -y python3-pynvml
@@ -64,6 +68,7 @@ jobs:
           package-name: nvidia_monitor
           target-ros2-distro: ${{ matrix.distro }}
           skip-tests: false
+          import-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload colcon logs on failure
         if: failure()
