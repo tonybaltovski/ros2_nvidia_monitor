@@ -57,11 +57,13 @@ def generate_launch_description():
                 remappings=[
                     (
                         '/diagnostics',
-                        PythonExpression([
-                            "'diagnostics' if '",
-                            namespace_diagnostics,
-                            "'.lower() in ('true', '1') else '/diagnostics'",
-                        ]),
+                        PythonExpression(
+                            [
+                                "'diagnostics' if '",
+                                namespace_diagnostics,
+                                "'.lower() in ('true', '1') else '/diagnostics'",
+                            ]
+                        ),
                     )
                 ],
                 parameters=[
