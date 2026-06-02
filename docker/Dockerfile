@@ -17,7 +17,7 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash && \
 
 FROM base AS deps-pip
 ARG ROS_DISTRO
-RUN pip install --no-cache-dir --break-system-packages pynvml && \
+RUN pip3 install --no-cache-dir --break-system-packages pynvml && \
     source /opt/ros/${ROS_DISTRO}/setup.bash && \
     rosdep install --from-paths src --ignore-src -r -y --skip-keys="python3-pynvml" && \
     colcon build --packages-select nvidia_monitor
