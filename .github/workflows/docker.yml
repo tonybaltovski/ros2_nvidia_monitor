@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ros_distro: [jazzy, lyrical, rolling]
+        ros_distro: [lyrical, rolling]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -43,7 +43,7 @@ jobs:
           tags: |
             type=raw,value=${{ matrix.ros_distro }}
             type=raw,value=${{ matrix.ros_distro }}-{{sha}}
-            type=raw,value=latest,enable=${{ matrix.ros_distro == 'jazzy' }}
+            type=raw,value=latest,enable=${{ matrix.ros_distro == 'lyrical' }}
 
       - uses: docker/build-push-action@v6
         with:
