@@ -7,8 +7,9 @@ WORKDIR /ros_ws/src/nvidia_monitor
 COPY . .
 
 WORKDIR /ros_ws
-RUN source /opt/ros/${ROS_DISTRO}/setup.bash && \
-    rosdep install --from-paths src --ignore-src -r -y && \
+RUN pip install --no-cache-dir --break-system-packages pynvml && \
+    source /opt/ros/${ROS_DISTRO}/setup.bash && \
+    rosdep install --from-paths src --ignore-src -r -y --skip-keys="python3-pynvml" && \
     colcon build --packages-select nvidia_monitor
 
 COPY docker/entrypoint.sh /entrypoint.sh
