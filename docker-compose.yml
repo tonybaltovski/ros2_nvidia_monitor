@@ -5,6 +5,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         ROS_DISTRO: ${ROS_DISTRO:-jazzy}
+        PYNVML_INSTALL: ${PYNVML_INSTALL:-deb}
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all}

@@ -22,7 +22,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ros_distro: [jazzy, lyrical, rolling]
+        include:
+          - ros_distro: jazzy
+            pynvml_install: deb
+          - ros_distro: lyrical
+            pynvml_install: pip
+          - ros_distro: rolling
+            pynvml_install: pip
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -49,7 +55,9 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
-          build-args: ROS_DISTRO=${{ matrix.ros_distro }}
+          build-args: |
+            ROS_DISTRO=${{ matrix.ros_distro }}
+            PYNVML_INSTALL=${{ matrix.pynvml_install }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
