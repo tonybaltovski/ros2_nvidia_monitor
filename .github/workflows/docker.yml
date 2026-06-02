@@ -43,14 +43,14 @@ jobs:
           tags: |
             type=raw,value=${{ matrix.ros_distro }}
             type=raw,value=${{ matrix.ros_distro }}-{{sha}}
-            type=raw,value=latest,enable=${{ matrix.ros_distro == 'lyrical' }}
+            type=raw,value=latest,enable=${{ matrix.ros_distro == 'jazzy' }}
 
       - uses: docker/build-push-action@v6
         with:
           context: .
           file: docker/Dockerfile
           build-args: ROS_DISTRO=${{ matrix.ros_distro }}
-          push: ${{ github.event_name != 'pull_request' && matrix.ros_distro != 'jazzy' }}
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
