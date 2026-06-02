@@ -1,0 +1,27 @@
+services:
+  nvidia_monitor:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        ROS_DISTRO: ${ROS_DISTRO:-jazzy}
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-all}
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - ROS_DISTRO=${ROS_DISTRO:-jazzy}
+    command: >
+      ros2 launch nvidia_monitor nvidia_monitor.launch.py
+        update_period:=${UPDATE_PERIOD:-1.0}
+        temperature_warn:=${TEMPERATURE_WARN:-80.0}
+        temperature_error:=${TEMPERATURE_ERROR:-95.0}
+        memory_warn:=${MEMORY_WARN:-0.85}
+        memory_error:=${MEMORY_ERROR:-0.95}
+        power_warn:=${POWER_WARN:-0.0}
+        power_error:=${POWER_ERROR:-0.0}
+        power_ratio_warn:=${POWER_RATIO_WARN:-0.90}
+        power_ratio_error:=${POWER_RATIO_ERROR:-1.00}
+        namespace:=${NAMESPACE:-}
+        namespace_diagnostics:=${NAMESPACE_DIAGNOSTICS:-false}
+    network_mode: host
+    restart: unless-stopped

@@ -34,15 +34,18 @@ ROS 2 node that polls NVIDIA GPUs via NVML and republishes telemetry on
 > host (verify with `nvidia-smi`). This package talks to the GPU via NVML; the
 > open-source `nouveau` driver is not supported.
 
-```bash
-sudo apt install python3-pynvml ros-${ROS_DISTRO}-diagnostic-updater
-```
-
 ## Build & run
 
 ```bash
+rosdep install --from-paths src --ignore-src -r -y
 colcon build --packages-select nvidia_monitor
 source install/setup.bash
 ros2 launch nvidia_monitor nvidia_monitor.launch.py
-ros2 run rqt_runtime_monitor rqt_runtime_monitor   # optional viewer
+```
+
+## View
+
+```bash
+# sudo apt install ros-${ROS_DISTRO}-rqt-runtime-monitor, if not installed (requires a desktop environment).
+ros2 run rqt_runtime_monitor rqt_runtime_monitor
 ```

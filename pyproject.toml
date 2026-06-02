@@ -6,5 +6,9 @@ target-version = "py312"
 select = ["E", "F", "W", "I", "B", "UP", "C4", "SIM"]
 ignore = ["E501"]
 
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+known-third-party = ["launch", "launch_ros"]
+
 [tool.ruff.format]
 quote-style = "single"

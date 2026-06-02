@@ -22,7 +22,7 @@ jobs:
     name: pre-commit
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
@@ -36,14 +36,11 @@ jobs:
         include:
           - distro: jazzy
             container: ubuntu:24.04
-            use-testing: false
           - distro: lyrical
             container: ubuntu:26.04
-            use-testing: false
           - distro: rolling
             container: ubuntu:26.04
-            use-testing: true
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: ${{ matrix.container }}
     steps:
@@ -53,15 +50,12 @@ jobs:
           apt-get install -y --no-install-recommends \
             sudo curl gnupg ca-certificates lsb-release locales git
           locale-gen en_US.UTF-8
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: ros-tooling/setup-ros@v0.7
         with:
           required-ros-distributions: ${{ matrix.distro }}
-          use-ros2-testing: ${{ matrix.use-testing }}
-
-      - name: Install pynvml (no rosdep key)
-        run: apt-get install -y python3-pynvml
+          use-ros2-testing: true
 
       - uses: ros-tooling/action-ros-ci@v0.4
         with:
@@ -69,10 +63,3 @@ jobs:
           target-ros2-distro: ${{ matrix.distro }}
           skip-tests: false
           import-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload colcon logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: colcon-logs-${{ matrix.distro }}
-          path: ros_ws/log
