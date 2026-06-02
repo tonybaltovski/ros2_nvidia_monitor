@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ros_distro: [lyrical, rolling]
+        ros_distro: [jazzy, lyrical, rolling]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -50,7 +50,7 @@ jobs:
           context: .
           file: docker/Dockerfile
           build-args: ROS_DISTRO=${{ matrix.ros_distro }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' && matrix.ros_distro != 'jazzy' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
