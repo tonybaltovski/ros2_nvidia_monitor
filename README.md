@@ -43,6 +43,45 @@ source install/setup.bash
 ros2 launch nvidia_monitor nvidia_monitor.launch.py
 ```
 
+### Launch arguments
+
+| Argument | Default | Description |
+| --- | --- | --- |
+| `namespace` | `''` | ROS namespace for the node. |
+| `namespace_diagnostics` | `false` | When `true`, remap `/diagnostics` into the namespace. |
+
+```bash
+ros2 launch nvidia_monitor nvidia_monitor.launch.py namespace:=gpu0 namespace_diagnostics:=true
+```
+
+## Docker
+
+Pre-built images are available from GitHub Container Registry:
+
+```bash
+docker pull ghcr.io/tonybaltovski/ros2_nvidia_monitor:jazzy
+docker pull ghcr.io/tonybaltovski/ros2_nvidia_monitor:rolling
+```
+
+### docker compose
+
+```bash
+# Default (jazzy)
+docker compose up -d
+
+# Override ROS distro
+ROS_DISTRO=rolling PYNVML_INSTALL=pip docker compose up -d --build
+```
+
+All parameters are configurable via environment variables (see `docker-compose.yml`):
+
+```bash
+UPDATE_PERIOD=2.0 TEMPERATURE_WARN=75.0 docker compose up -d
+```
+
+> **Note:** Requires the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+> on the host.
+
 ## View
 
 ```bash
