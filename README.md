@@ -54,6 +54,13 @@ ros2 launch nvidia_monitor nvidia_monitor.launch.py
 ros2 launch nvidia_monitor nvidia_monitor.launch.py namespace:=gpu0 namespace_diagnostics:=true
 ```
 
+## View
+
+```bash
+# sudo apt install ros-${ROS_DISTRO}-rqt-runtime-monitor, if not installed (requires a desktop environment).
+ros2 run rqt_runtime_monitor rqt_runtime_monitor
+```
+
 ## Docker
 
 Pre-built images are available from GitHub Container Registry:
@@ -82,10 +89,3 @@ UPDATE_PERIOD=2.0 TEMPERATURE_WARN=75.0 docker compose up -d
 
 > **Note:** Requires the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 > on the host.
-
-## View
-
-```bash
-# sudo apt install ros-${ROS_DISTRO}-rqt-runtime-monitor, if not installed (requires a desktop environment).
-ros2 run rqt_runtime_monitor rqt_runtime_monitor
-```
