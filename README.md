@@ -60,6 +60,7 @@ Pre-built images are available from GitHub Container Registry:
 
 ```bash
 docker pull ghcr.io/tonybaltovski/ros2_nvidia_monitor:jazzy
+docker pull ghcr.io/tonybaltovski/ros2_nvidia_monitor:lyrical
 docker pull ghcr.io/tonybaltovski/ros2_nvidia_monitor:rolling
 ```
 
