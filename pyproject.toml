@@ -3,6 +3,9 @@ line-length = 99
 skip-string-normalization = true
 target-version = ["py312"]
 
+[tool.pytest.ini_options]
+testpaths = ["test"]
+
 [tool.isort]
 profile = "black"
 line_length = 99
