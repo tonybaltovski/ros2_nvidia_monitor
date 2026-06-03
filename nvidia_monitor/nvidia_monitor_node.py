@@ -33,9 +33,7 @@ def _nvml_str(value):
     return value.decode('utf-8') if isinstance(value, bytes) else value
 
 
-# fmt: off
 class NvidiaMonitor(Node):
-    # fmt: on
 
     def __init__(self):
         super().__init__('nvidia_monitor')
