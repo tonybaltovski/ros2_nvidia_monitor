@@ -34,6 +34,7 @@ def _nvml_str(value):
 
 
 class NvidiaMonitor(Node):
+
     def __init__(self):
         super().__init__('nvidia_monitor')
 

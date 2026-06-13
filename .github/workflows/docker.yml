@@ -1,11 +1,12 @@
 name: Docker
 
 on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
   push:
-    branches: [main]
     tags: ['v*']
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -19,17 +20,26 @@ permissions:
 jobs:
   docker:
     name: ${{ matrix.ros_distro }}
+    if: >-
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
     strategy:
       fail-fast: false
       matrix:
-        ros_distro: [jazzy, lyrical, rolling]
+        include:
+          - ros_distro: jazzy
+            pynvml_install: deb
+          - ros_distro: lyrical
+            pynvml_install: pip
+          - ros_distro: rolling
+            pynvml_install: pip
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
 
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -37,7 +47,7 @@ jobs:
 
       - name: Docker metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
@@ -45,11 +55,13 @@ jobs:
             type=raw,value=${{ matrix.ros_distro }}-{{sha}}
             type=raw,value=latest,enable=${{ matrix.ros_distro == 'jazzy' }}
 
-      - uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v7
         with:
           context: .
           file: docker/Dockerfile
-          build-args: ROS_DISTRO=${{ matrix.ros_distro }}
+          build-args: |
+            ROS_DISTRO=${{ matrix.ros_distro }}
+            PYNVML_INSTALL=${{ matrix.pynvml_install }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
