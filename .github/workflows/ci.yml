@@ -60,8 +60,7 @@ jobs:
       - name: Install ROS dependencies
         run: |
           rosdep update --include-eol-distros
-          rosdep install -r --from-paths . --ignore-src --rosdistro ${{ matrix.distro }} -y \
-            --skip-keys "python3-pynvml rti-connext-dds-5.3.1 rti-connext-dds-6.0.1 rti-connext-dds-7.3.0 rti-connext-dds-7.7.0"
+          rosdep install -r --from-paths . --ignore-src --rosdistro ${{ matrix.distro }} -y --skip-keys "python3-pynvml rti-connext-dds-5.3.1 rti-connext-dds-6.0.1 rti-connext-dds-7.3.0 rti-connext-dds-7.7.0"
 
       - uses: ros-tooling/action-ros-ci@v0.4
         with:
